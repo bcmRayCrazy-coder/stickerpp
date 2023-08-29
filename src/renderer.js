@@ -103,8 +103,108 @@ async function listenConfigContent(view) {
     log('Listening to config view');
 }
 
+/**
+ * 初始化表情面板
+ * @param {Element} pannel 表情面板
+ */
+async function initStickerMenu(pannel) {
+    function setPageShow(id, show, pageWrapper) {
+        pageWrapper.querySelector('#page-' + id).style.display = show
+            ? 'block'
+            : 'none';
+    }
+
+    /**
+     * 添加菜单
+     * @param {string} title 标题
+     * @param {string} icon 图标
+     * @param {Element} page 页面
+     */
+    function addMenu(title, icon, page, id) {
+        // const pageElement = icon.cloneNode(true);
+        const iconElement = document.createElement('div');
+        iconElement.innerHTML = `<i class="q-icon" title="${title}" is-bold="true"style="color:var(--icon_primary); height:24px;">${icon}</i>`;
+        iconElement.classList.add(
+            'tabs-container-item',
+            'stickerpp-container-item'
+        );
+        iconElement.id = id;
+
+        // Page
+        const pageElement = document.createElement('div');
+        pageElement.classList.add('stickerpp-container');
+        pageElement.innerHTML = `<div class="q-scroll-view scroll-view--show-scrollbar stickerpp-container-list">${page}</div>`;
+        pageElement.id = 'page-' + id;
+
+        const pageWrapperElement = pannel.querySelector(
+            '.sticker-panel__pages'
+        );
+        pageWrapperElement.appendChild(pageElement);
+
+        // Tab
+        const tabElement = pannel.querySelector(
+            'div.tabs.sticker-panel__bar > div'
+        );
+        tabElement.appendChild(iconElement);
+
+        iconElement.addEventListener('click', () => {
+            // 切换到本tab
+            pannel
+                .querySelectorAll('.tabs-container-item-active')
+                .forEach((e) =>
+                    e.classList.remove('tabs-container-item-active')
+                );
+            pannel
+                .querySelectorAll('div.sticker-panel__pages > div')
+                .forEach((e) => (e.style.display = 'none'));
+            setPageShow(id, true, pageWrapperElement);
+        });
+
+        document.querySelectorAll('.tabs-container-item').forEach((e) =>
+            e.addEventListener('click', () => {
+                if (e.id != id) {
+                    // 切换到其他tab
+                    iconElement.classList.remove('tabs-container-item-active');
+                    setPageShow(id, false, pageWrapperElement);
+                }
+            })
+        );
+
+        setPageShow(id, false, pageWrapperElement);
+    }
+
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = `llqqnt://local-file/${LiteLoader.plugins.stickerpp.path.plugin}/src/sticker.css`;
+    document.head.appendChild(style);
+
+    const localStickersPath = `llqqnt://local-file/${
+        (await stickerpp.getConfig()).sticker_path
+    }`;
+
+    const fillColor = getComputedStyle(
+        pannel.querySelector('div.tabs.sticker-panel__bar > div > div')
+    ).color;
+    addMenu(
+        '本地表情',
+        `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='${fillColor}' height='20'><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8 0-1.168.258-2.275.709-3.276.154.09.308.182.456.276.396.25.791.5 1.286.688.494.187 1.088.312 1.879.312.792 0 1.386-.125 1.881-.313s.891-.437 1.287-.687.792-.5 1.287-.688c.494-.187 1.088-.312 1.88-.312s1.386.125 1.88.313c.495.187.891.437 1.287.687s.792.5 1.287.688c.178.067.374.122.581.171.191.682.3 1.398.3 2.141 0 4.411-3.589 8-8 8z"></path><circle cx="8.5" cy="12.5" r="1.5"></circle><circle cx="15.5" cy="12.5" r="1.5"></circle></svg>`,
+        '<div></div>',
+        'local-stickers'
+    );
+}
+
 // 页面加载完成时触发
-function onLoad() {}
+function onLoad() {
+    var getPannelInterval = setInterval(() => {
+        var pannel = document.querySelector(
+            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.expression-panel > div > div'
+        );
+        if (!pannel) return;
+
+        initStickerMenu(pannel);
+        clearInterval(getPannelInterval);
+    }, 500);
+}
 
 // 打开设置界面时触发
 function onConfigView(view) {

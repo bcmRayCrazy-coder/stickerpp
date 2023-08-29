@@ -1,0 +1,34 @@
+.stickerpp-container-item {
+    align-items: center;
+    border-radius: 6px;
+    color: var(--icon_primary);
+    display: flex;
+    flex-shrink: 0;
+    height: 40px;
+    justify-content: center;
+    margin-right: 14px;
+    width: 40px;
+}
+
+.stickerpp-container-item:hover {
+    background-color: var(--overlay_hover);
+    color: var(--brand_standard);
+}
+
+.stickerpp-container {
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.stickerpp-container-list {
+    align-content: flex-start;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: overlay;
+    padding: 17px 0 0 17px;
+    width: 100%;
+}
