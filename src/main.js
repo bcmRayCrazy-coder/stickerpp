@@ -19,24 +19,31 @@ function setConfig(configPath, content) {
 }
 
 // 加载插件时触发
-function onLoad(plugin) {
+async function onLoad(plugin) {
     const pluginDataPath = plugin.path.data;
     const configPath = path.join(pluginDataPath, 'config.json');
     defaultConfig.sticker_path = path.join(pluginDataPath, 'stickers');
 
     // 初始化设置文件
-    if (!fs.existsSync(pluginDataPath)) {
+    if (!fs.existsSync(pluginDataPath))
         fs.mkdirSync(pluginDataPath, { recursive: true });
-    }
-    if (!fs.existsSync(configPath)) {
+
+    if (!fs.existsSync(configPath))
         fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 4));
-    }
+
+    /**
+     * @type {defaultConfig}
+     */
+    var config = JSON.parse(fs.readFileSync(configPath, 'utf-8').toString());
+
+    // 初始化表情目录
+    if (!fs.existsSync(config.sticker_path))
+        fs.mkdirSync(config.sticker_path, { recursive: true });
 
     // 获取设置
     ipcMain.handle('LiteLoader.stickerpp.getConfig', (event) => {
         try {
-            const data = fs.readFileSync(configPath, 'utf-8');
-            return JSON.parse(data);
+            return config;
         } catch (error) {
             console.error(error);
             return {};
@@ -48,6 +55,10 @@ function onLoad(plugin) {
         if (!content)
             return console.error('[Sticker++] New config content is', content);
         try {
+            config =
+                typeof content == 'string'
+                    ? JSON.stringify(JSON.parse(content), null, 4)
+                    : JSON.stringify(content, null, 4);
             setConfig(configPath, content);
         } catch (error) {
             console.error(error);
@@ -56,8 +67,6 @@ function onLoad(plugin) {
 
     // 显示表情目录
     ipcMain.handle('LiteLoader.stickerpp.showStickerDir', (event) => {
-        const data = fs.readFileSync(configPath, 'utf-8');
-        var config = JSON.parse(data);
         shell.openPath(config.sticker_path);
     });
 }
