@@ -3,25 +3,30 @@ const { addMenu } = await import(
     `llqqnt://local-file/${plugin_path.plugin}/src/renderer/sticker/addMenu.js`
 );
 
+async function sendSticker(stickerPath) {
+    const peer = await LLAPI.getPeer();
+    const elements = [
+        {
+            type: 'image',
+            file: stickerPath,
+        },
+    ];
+    await LLAPI.sendMessage(peer, elements);
+}
+
 /**
  * 添加本地表情面板
  * @param {Element} pannel 表情面板
  */
 async function addLocalStickerPannel(pannel) {
-    const localStickersPath = `llqqnt://local-file/${
-        (await stickerpp.getConfig()).sticker_path
-    }`;
-
     /**
      * @type {string[]}
      */
-    const stickers = (await stickerpp.getLocalStickers()).map(
-        (v) => 'llqqnt://local-file/' + v
-    );
+    const stickers = await stickerpp.getLocalStickers();
     var pageContent = '';
     stickers.forEach((stickerPath) => {
         pageContent += `
-<div class="stickerpp-list-item"><div class="q-tooltips sticker-list-tooltips"><div class="stickerpp-image sticker-list-item-img" tabindex="-1" data-src="${stickerPath}" style="width: 58px; height: 58px;" id="local-sticker-item"><img class="image-content image-content--contain" src="${stickerPath}" loading="eager"></div><div class="q-tooltips__content q-tooltips__right  q-tooltips__no_content" style=""></div></div></div>`;
+<div class="stickerpp-list-item"><div class="q-tooltips sticker-list-tooltips"><div class="stickerpp-image sticker-list-item-img" tabindex="-1" data-src="${stickerPath}" style="width: 58px; height: 58px;" id="local-sticker-item"><img class="image-content image-content--contain" src="llqqnt://local-file/${stickerPath}" loading="eager"></div><div class="q-tooltips__content q-tooltips__right  q-tooltips__no_content" style=""></div></div></div>`;
     });
 
     /**
@@ -35,9 +40,10 @@ async function addLocalStickerPannel(pannel) {
         'local-stickers'
     );
     page.querySelectorAll('#local-sticker-item').forEach((btn) => {
-        const stickerUrl = btn.dataset.src;
+        const stickerPath = btn.dataset.src;
         btn.addEventListener('click', () => {
-            console.log(stickerUrl);
+            console.log(stickerPath);
+            sendSticker(stickerPath);
         });
     });
 }
