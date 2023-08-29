@@ -17,6 +17,7 @@ function setPageShow(id, show, pageWrapper) {
  * @param {string} icon 图标
  * @param {Element} page 页面
  * @param {string} id tab id
+ * @returns {HTMLElement} page元素
  */
 export function addMenu(pannel, title, icon, page, id) {
     const iconElement = document.createElement('div');
@@ -69,11 +70,13 @@ export function addMenu(pannel, title, icon, page, id) {
     // 修复打开插件添加的tab后关闭表情, 再打开无法使用的问题
     setInterval(() => {
         var shortcutsElement = document.querySelector(
-            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.chat-func-bar.shortcuts.vue-component'
+            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div'
         );
         if (!shortcutsElement) return;
         shortcutsElement.addEventListener('click', () => {
             setPageShow(id, false, pageWrapperElement);
         });
     }, 500);
+
+    return pageElement;
 }

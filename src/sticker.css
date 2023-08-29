@@ -32,3 +32,31 @@
     padding: 17px 0 0 17px;
     width: 100%;
 }
+
+.stickerpp-list-item {
+    -webkit-app-region: no-drag;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: 64px;
+    justify-content: center;
+    margin-right: 6px;
+    width: 64px;
+}
+
+.stickerpp-image {
+    line-height: 0;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.stickerpp-image .image-content {
+    object-fit: contain;
+    object-position: center;
+    height: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    text-indent: 100%;
+    width: 100%;
+}

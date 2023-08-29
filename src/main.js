@@ -10,6 +10,38 @@ var defaultConfig = {
     sticker_path: '',
 };
 
+const stickerFileRegExp = new RegExp(/.+\.(png|jpe?g|gif)/g);
+function isValidStickerFile(value) {
+    return stickerFileRegExp.test(value);
+}
+
+/**
+ * 递归遍历，获取指定文件夹下面的所有文件路径
+ * @returns {string[]} 文件
+ */
+function getAllFiles(filePath) {
+    let allFilePaths = [];
+    if (fs.existsSync(filePath)) {
+        const files = fs.readdirSync(filePath);
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let currentFilePath = filePath + '/' + file;
+            let stats = fs.lstatSync(currentFilePath);
+            if (stats.isDirectory()) {
+                allFilePaths = allFilePaths.concat(
+                    getAllFiles(currentFilePath)
+                );
+            } else {
+                allFilePaths.push(currentFilePath);
+            }
+        }
+    } else {
+        console.warn(`指定的目录${filePath}不存在！`);
+    }
+
+    return allFilePaths;
+}
+
 function setConfig(configPath, content) {
     const newConfig =
         typeof content == 'string'
@@ -68,6 +100,12 @@ async function onLoad(plugin) {
     // 显示表情目录
     ipcMain.handle('LiteLoader.stickerpp.showStickerDir', (event) => {
         shell.openPath(config.sticker_path);
+    });
+
+    // 获取本地表情
+    ipcMain.handle('LiteLoader.stickerpp.getLocalStickers', (event) => {
+        var paths = getAllFiles(config.sticker_path).filter(isValidStickerFile);
+        return paths;
     });
 }
 

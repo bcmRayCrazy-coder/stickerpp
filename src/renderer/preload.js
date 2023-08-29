@@ -8,4 +8,6 @@ contextBridge.exposeInMainWorld('stickerpp', {
         ipcRenderer.invoke('LiteLoader.stickerpp.setConfig', content),
     showStickerDir: () =>
         ipcRenderer.invoke('LiteLoader.stickerpp.showStickerDir'),
+    getLocalStickers: () =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.getLocalStickers'),
 });
