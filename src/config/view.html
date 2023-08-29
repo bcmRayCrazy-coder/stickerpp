@@ -1,0 +1,85 @@
+<div class="liteloader setting-main__content" style="display: block">
+    <div class="stickerpp plugin-config-view">
+        <section>
+            <h1>常规</h1>
+            <div class="wrap">
+                <div class="vertical-list-item">
+                    <div>
+                        <h2>合并本地和远程表情</h2>
+                        <span class="secondary-text"
+                            >将本地和远程表情放在一个栏目中,
+                            修改后重启生效</span
+                        >
+                    </div>
+                    <div class="q-switch" id="sticker_together">
+                        <span class="q-switch__handle"></span>
+                    </div>
+                </div>
+                <hr class="horizontal-dividing-line" />
+                <div class="vertical-list-item">
+                    <div>
+                        <h2>启用远程表情</h2>
+                        <span class="secondary-text"
+                            >(实验性功能) 在表情存放目录内添加remotes.txt,
+                            里面写上图片网址,
+                            <br />网站内容可为图片或另一堆网址,
+                            多个网址请用换行分割, 修改后重启生效</span
+                        >
+                    </div>
+                    <div class="q-switch" id="enable_remote">
+                        <span class="q-switch__handle"></span>
+                    </div>
+                </div>
+                <hr class="horizontal-dividing-line" />
+                <div class="vertical-list-item">
+                    <div>
+                        <h2>更新表情</h2>
+                        <span class="secondary-text">无需重启, 当场生效</span>
+                    </div>
+                    <button
+                        id="fetch_sticker"
+                        class="q-button q-button--small q-button--secondary"
+                    >
+                        重新获取表情
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>表情</h1>
+            <div class="wrap">
+                <div class="horizotal-list-item" style="margin: 12px">
+                    <div>
+                        <h2>表情存放目录</h2>
+                        <span class="secondary-text"
+                            >表情存放的地方，修改后重启生效</span
+                        >
+                    </div>
+                    <div class="question-select"">
+                    <div class="q-input question-input text-input-wrap">
+                        <input
+                            id="sticker_path"
+                            class="q-input__inner text-input"
+                            spellcheck="false"
+                            placeholder="请输入路径"
+                            type="text"
+                        />
+                    </div>
+                </div>
+                <hr class="horizontal-dividing-line" />
+                <div class="vertical-list-item">
+                    <div>
+                        <h2>打开表情存放目录</h2>
+                        <span class="secondary-text">我把表情放哪了😅</span>
+                    </div>
+                    <button
+                        id="show_sticker_dir"
+                        class="q-button q-button--small q-button--secondary"
+                    >
+                        打开表情存放目录
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
