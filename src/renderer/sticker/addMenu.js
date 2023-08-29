@@ -30,6 +30,7 @@ export function addMenu(pannel, title, icon, page, id) {
     // Page
     const pageElement = document.createElement('div');
     pageElement.classList.add('stickerpp-container');
+    pageElement.style.display = 'none';
     pageElement.innerHTML = `<div class="q-scroll-view scroll-view--show-scrollbar stickerpp-container-list">${page}</div>`;
     pageElement.id = 'page-' + id;
 
@@ -64,4 +65,16 @@ export function addMenu(pannel, title, icon, page, id) {
     );
 
     setPageShow(id, false, pageWrapperElement);
+
+    // 修复打开插件添加的tab后关闭表情, 再打开无法使用的问题
+    var getShortcutsInterval = setInterval(() => {
+        var shortcutsElement = document.querySelector(
+            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.chat-func-bar.shortcuts.vue-component'
+        );
+        if (!shortcutsElement) return;
+        shortcutsElement.addEventListener('click', () => {
+            setPageShow(id, false, pageWrapperElement);
+        });
+        clearInterval(getShortcutsInterval);
+    }, 500);
 }
