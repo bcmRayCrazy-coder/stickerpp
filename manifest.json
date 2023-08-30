@@ -10,6 +10,10 @@
         "name": "bcmray_crazy",
         "link": "https://github.com/bcmRayCrazy-coder"
     },
+    "repository": {
+        "repo": "bcmRayCrazy-coder/stickerpp",
+        "branch": "main"
+    },
     "platform": [
         "win32",
         "linux",
