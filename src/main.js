@@ -3,6 +3,11 @@ const { ipcMain, shell } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
+const plugin_path = LiteLoader.plugins.stickerpp.path;
+const { getAllRemoteStickers } = await import(
+    `llqqnt://local-file/${plugin_path.plugin}/src/remote/remote.js`
+);
+
 // 默认配置
 var defaultConfig = {
     sticker_together: false,
@@ -106,6 +111,16 @@ async function onLoad(plugin) {
     ipcMain.handle('LiteLoader.stickerpp.getLocalStickers', (event) => {
         var paths = getAllFiles(config.sticker_path).filter(isValidStickerFile);
         return paths;
+    });
+
+    // 获取远程表情
+    ipcMain.handle('LiteLoader.stickerpp.getRemoteStickers', async (event) => {
+        const remotePath = path.join(config.sticker_path, 'remote.txt');
+
+        if (!fs.existsSync(remotePath)) return [];
+
+        const stickerUrls = fs.readFileSync(remotePath).toString().split('\n');
+        return await getAllRemoteStickers(stickerUrls);
     });
 }
 
