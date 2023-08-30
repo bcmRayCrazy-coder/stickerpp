@@ -9,14 +9,14 @@ const { initStickerMenu } = await import(
 
 // 页面加载完成时触发
 function onLoad() {
-    var getPannelInterval = setInterval(() => {
-        var pannel = document.querySelector(
+    var getpanelInterval = setInterval(() => {
+        var panel = document.querySelector(
             '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.expression-panel > div > div'
         );
-        if (!pannel) return;
+        if (!panel) return;
 
-        initStickerMenu(pannel);
-        clearInterval(getPannelInterval);
+        initStickerMenu(panel);
+        clearInterval(getpanelInterval);
     }, 500);
 }
 

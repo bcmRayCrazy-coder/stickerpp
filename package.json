@@ -1,0 +1,18 @@
+{
+  "name": "stickerpp",
+  "version": "0.1.0",
+  "description": "更多、更好的表情管理😊",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcmRayCrazy-coder/stickerpp.git"
+  },
+  "author": "bcmray_crazy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcmRayCrazy-coder/stickerpp/issues"
+  },
+  "homepage": "https://github.com/bcmRayCrazy-coder/stickerpp#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

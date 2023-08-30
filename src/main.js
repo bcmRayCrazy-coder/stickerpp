@@ -2,11 +2,7 @@
 const { ipcMain, shell } = require('electron');
 const fs = require('fs');
 const path = require('path');
-
-const plugin_path = LiteLoader.plugins.stickerpp.path;
-const { getAllRemoteStickers } = await import(
-    `llqqnt://local-file/${plugin_path.plugin}/src/remote/remote.js`
-);
+const crypto = require('crypto');
 
 // 默认配置
 var defaultConfig = {
@@ -57,6 +53,9 @@ function setConfig(configPath, content) {
 
 // 加载插件时触发
 async function onLoad(plugin) {
+    const getAllRemoteStickers = require('./remote/remote.js');
+    const downloadRemoteStickers = require('./remote/download.js');
+
     const pluginDataPath = plugin.path.data;
     const configPath = path.join(pluginDataPath, 'config.json');
     defaultConfig.sticker_path = path.join(pluginDataPath, 'stickers');
@@ -73,9 +72,12 @@ async function onLoad(plugin) {
      */
     var config = JSON.parse(fs.readFileSync(configPath, 'utf-8').toString());
 
+    const tmpPath = path.join(config.sticker_path, '/tmp/');
+
     // 初始化表情目录
     if (!fs.existsSync(config.sticker_path))
         fs.mkdirSync(config.sticker_path, { recursive: true });
+    if (!fs.existsSync(tmpPath)) fs.mkdirSync(tmpPath, { recursive: true });
 
     // 获取设置
     ipcMain.handle('LiteLoader.stickerpp.getConfig', (event) => {
@@ -115,13 +117,30 @@ async function onLoad(plugin) {
 
     // 获取远程表情
     ipcMain.handle('LiteLoader.stickerpp.getRemoteStickers', async (event) => {
-        const remotePath = path.join(config.sticker_path, 'remote.txt');
-
+        const remotePath = path.join(config.sticker_path, 'remotes.txt');
         if (!fs.existsSync(remotePath)) return [];
-
         const stickerUrls = fs.readFileSync(remotePath).toString().split('\n');
+        console.log(stickerUrls);
         return await getAllRemoteStickers(stickerUrls);
     });
+
+    // 下载远程表情
+    ipcMain.handle(
+        'LiteLoader.stickerpp.downloadRemoteSticker',
+        async (event, stickerPath) => {
+            // 16位随机字符串
+            const localPath = path.join(
+                tmpPath,
+                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16)
+            );
+            await downloadRemoteStickers(stickerPath, localPath);
+            setTimeout(() => {
+                // 一分钟后删除缓存
+                fs.unlinkSync(localPath);
+            }, 60000);
+            return localPath;
+        }
+    );
 }
 
 // 创建窗口时触发

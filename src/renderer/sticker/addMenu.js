@@ -12,14 +12,14 @@ function setPageShow(id, show, pageWrapper) {
 
 /**
  * 添加菜单
- * @param {Element} pannel 表情面板
+ * @param {Element} panel 表情面板
  * @param {string} title 标题
  * @param {string} icon 图标
  * @param {Element} page 页面
  * @param {string} id tab id
  * @returns {HTMLElement} page元素
  */
-export function addMenu(pannel, title, icon, page, id) {
+export function addMenu(panel, title, icon, page, id) {
     const iconElement = document.createElement('div');
     iconElement.innerHTML = `<i class="q-icon" title="${title}" is-bold="true"style="color:var(--icon_primary); height:24px;">${icon}</i>`;
     iconElement.classList.add(
@@ -35,21 +35,21 @@ export function addMenu(pannel, title, icon, page, id) {
     pageElement.innerHTML = `<div class="q-scroll-view scroll-view--show-scrollbar stickerpp-container-list">${page}</div>`;
     pageElement.id = 'page-' + id;
 
-    const pageWrapperElement = pannel.querySelector('.sticker-panel__pages');
+    const pageWrapperElement = panel.querySelector('.sticker-panel__pages');
     pageWrapperElement.appendChild(pageElement);
 
     // Tab
-    const tabElement = pannel.querySelector(
+    const tabElement = panel.querySelector(
         'div.tabs.sticker-panel__bar > div'
     );
     tabElement.appendChild(iconElement);
 
     iconElement.addEventListener('click', () => {
         // 切换到本tab
-        pannel
+        panel
             .querySelectorAll('.tabs-container-item-active')
             .forEach((e) => e.classList.remove('tabs-container-item-active'));
-        pannel
+        panel
             .querySelectorAll('div.sticker-panel__pages > div')
             .forEach((e) => (e.style.display = 'none'));
         setPageShow(id, true, pageWrapperElement);

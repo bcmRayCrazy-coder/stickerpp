@@ -13,6 +13,8 @@ contextBridge.exposeInMainWorld('stickerpp', {
     // 表情
     getLocalStickers: () =>
         ipcRenderer.invoke('LiteLoader.stickerpp.getLocalStickers'),
-    getRemoteStickers:()=>
-        ipcRenderer.invoke('LiteLoader.stickerpp.getRemoteStickers')
+    getRemoteStickers: () =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.getRemoteStickers'),
+    downloadRemoteSticker: (url) =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.downloadRemoteSticker', url),
 });

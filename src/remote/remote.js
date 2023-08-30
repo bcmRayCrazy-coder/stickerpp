@@ -4,6 +4,7 @@
  * @returns {Promise<string[]>}
  */
 async function getRemoteSticker(url) {
+    const fetch = (await import('node-fetch')).default;
     var stickers = [];
     try {
         const fetchData = await fetch(url, {});
@@ -42,11 +43,11 @@ async function getRemoteSticker(url) {
  * 获取所有远程表情
  * @param {string[]} url 链接
  */
-export async function getAllRemoteStickers(url) {
+module.exports = async function getAllRemoteStickers(url) {
     var stickers = [];
     for (let i = 0; i < url.length; i++) {
         const stickerUrl = url[i];
         stickers.push(...(await getRemoteSticker(stickerUrl)));
     }
     return stickers;
-}
+};
