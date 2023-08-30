@@ -9,6 +9,7 @@ async function sendSticker(stickerPath) {
         {
             type: 'image',
             file: stickerPath,
+            asface: true,
         },
     ];
     await LLAPI.sendMessage(peer, elements);
@@ -42,7 +43,6 @@ async function addLocalStickerPannel(pannel) {
     page.querySelectorAll('#local-sticker-item').forEach((btn) => {
         const stickerPath = btn.dataset.src;
         btn.addEventListener('click', () => {
-            console.log(stickerPath);
             sendSticker(stickerPath);
         });
     });
