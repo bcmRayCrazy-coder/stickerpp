@@ -2,7 +2,7 @@ name: Sticker++ Plugin Release
 
 on:
   pull_request:
-    tags:
+    branch:
       - "main"
     types:
       - closed
