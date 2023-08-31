@@ -27,6 +27,11 @@ async function addConfigContent(view) {
     link.href = cssPath;
     document.head.appendChild(link);
 
+    const idDarkMode = document.body.getAttribute('q-theme') != 'light';
+    view.querySelectorAll('#svg-fill').forEach((e) => {
+        e.setAttribute('fill', idDarkMode ? '#ffffff' : '#000000');
+    });
+
     log('Added config view');
 }
 
@@ -43,7 +48,7 @@ async function listenConfigContent(view) {
     // 显示表情目录
     const showStickerDir = debounce(
         () => stickerpp.openPath(config.sticker_path),
-        200,
+        200
     );
 
     /**
@@ -95,11 +100,11 @@ async function listenConfigContent(view) {
     listenChange(
         'sticker_path',
         (e) => e.value,
-        (e, defaultValue) => (e.value = defaultValue),
+        (e, defaultValue) => (e.value = defaultValue)
     );
 
     view.querySelector('#show_sticker_dir').addEventListener('click', () =>
-        showStickerDir(),
+        showStickerDir()
     );
 
     log('Listening to config view');
