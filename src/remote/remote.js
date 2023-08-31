@@ -9,7 +9,7 @@ async function getRemoteSticker(url) {
     try {
         const fetchData = await fetch(url, { method: 'head' });
 
-        if (!fetchData.ok)
+        if (fetchData.status >= 400)
             throw new Error(
                 '无法获取 ' + url + ' 的表情 - 状态码不在 200~299 之间'
             );
