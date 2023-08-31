@@ -4,7 +4,7 @@
     "name": "Sticker++",
     "slug": "stickerpp",
     "description": "更多、更好的表情管理😊",
-    "version": "0.1.0",
+    "version": "0.1.6",
     "thumbnail": "./icon.png",
     "author": {
         "name": "bcmray_crazy",
@@ -12,7 +12,11 @@
     },
     "repository": {
         "repo": "bcmRayCrazy-coder/stickerpp",
-        "branch": "main"
+        "branch": "main",
+        "use_release": {
+            "tag": "latest",
+            "name": "stickerpp.zip"
+        }
     },
     "platform": [
         "win32",
