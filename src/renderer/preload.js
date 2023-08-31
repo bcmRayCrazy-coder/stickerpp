@@ -17,7 +17,10 @@ contextBridge.exposeInMainWorld('stickerpp', {
         ipcRenderer.invoke('LiteLoader.stickerpp.downloadRemoteSticker', url),
 
     // 操作
-    openPath:  (path) => ipcRenderer.invoke('LiteLoader.stickerpp.action.openPath', path),
-    openExternal: (url) => ipcRenderer.invoke('LiteLoader.stickerpp.action.openExternal',url),
-    showItem: (path) => ipcRenderer.invoke('LiteLoader.stickerpp.action.showItem',path)
+    openPath: (path) =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.action.openPath', path),
+    openExternal: (url) =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.action.openExternal', url),
+    showItem: (path) =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.action.showItem', path),
 });

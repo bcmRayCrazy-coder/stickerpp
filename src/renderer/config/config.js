@@ -1,7 +1,6 @@
 const plugin_path = LiteLoader.plugins.stickerpp.path;
-const { log } = await import(
-    `llqqnt://local-file/${plugin_path.plugin}/src/logger.js`
-);
+await import(`llqqnt://local-file/${plugin_path.plugin}/src/logger.js`);
+const { log } = globalThis.logger;
 
 // 防抖
 function debounce(fn, time) {
@@ -44,7 +43,7 @@ async function listenConfigContent(view) {
     // 显示表情目录
     const showStickerDir = debounce(
         () => stickerpp.openPath(config.sticker_path),
-        200
+        200,
     );
 
     /**
@@ -96,11 +95,11 @@ async function listenConfigContent(view) {
     listenChange(
         'sticker_path',
         (e) => e.value,
-        (e, defaultValue) => (e.value = defaultValue)
+        (e, defaultValue) => (e.value = defaultValue),
     );
 
     view.querySelector('#show_sticker_dir').addEventListener('click', () =>
-        showStickerDir()
+        showStickerDir(),
     );
 
     log('Listening to config view');
