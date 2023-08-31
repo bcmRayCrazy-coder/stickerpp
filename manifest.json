@@ -18,11 +18,7 @@
             "name": "stickerpp.zip"
         }
     },
-    "platform": [
-        "win32",
-        "linux",
-        "darwin"
-    ],
+    "platform": ["win32", "linux", "darwin"],
     "injects": {
         "renderer": "./src/renderer/renderer.js",
         "main": "./src/main.js",

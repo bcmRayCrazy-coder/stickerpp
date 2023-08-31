@@ -24,7 +24,7 @@ export function addMenu(panel, title, icon, page, id) {
     iconElement.innerHTML = `<i class="q-icon" title="${title}" is-bold="true"style="color:var(--icon_primary); height:24px;">${icon}</i>`;
     iconElement.classList.add(
         'tabs-container-item',
-        'stickerpp-container-item'
+        'stickerpp-container-item',
     );
     iconElement.id = id;
 
@@ -39,9 +39,7 @@ export function addMenu(panel, title, icon, page, id) {
     pageWrapperElement.appendChild(pageElement);
 
     // Tab
-    const tabElement = panel.querySelector(
-        'div.tabs.sticker-panel__bar > div'
-    );
+    const tabElement = panel.querySelector('div.tabs.sticker-panel__bar > div');
     tabElement.appendChild(iconElement);
 
     iconElement.addEventListener('click', () => {
@@ -62,7 +60,7 @@ export function addMenu(panel, title, icon, page, id) {
                 iconElement.classList.remove('tabs-container-item-active');
                 setPageShow(id, false, pageWrapperElement);
             }
-        })
+        }),
     );
 
     setPageShow(id, false, pageWrapperElement);
@@ -70,7 +68,7 @@ export function addMenu(panel, title, icon, page, id) {
     // 修复打开插件添加的tab后关闭表情, 再打开无法使用的问题
     setInterval(() => {
         var shortcutsElement = document.querySelector(
-            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div'
+            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div',
         );
         if (!shortcutsElement) return;
         shortcutsElement.addEventListener('click', () => {

@@ -30,7 +30,7 @@ function getAllFiles(filePath) {
             let stats = fs.lstatSync(currentFilePath);
             if (stats.isDirectory()) {
                 allFilePaths = allFilePaths.concat(
-                    getAllFiles(currentFilePath)
+                    getAllFiles(currentFilePath),
                 );
             } else {
                 allFilePaths.push(currentFilePath);
@@ -131,7 +131,7 @@ async function onLoad(plugin) {
             // 16位随机字符串
             const localPath = path.join(
                 tmpPath,
-                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16)
+                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16),
             );
             await downloadRemoteStickers(stickerPath, localPath);
             setTimeout(() => {
@@ -139,7 +139,7 @@ async function onLoad(plugin) {
                 fs.unlinkSync(localPath);
             }, 60000);
             return localPath;
-        }
+        },
     );
 }
 
