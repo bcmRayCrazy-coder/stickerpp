@@ -7,7 +7,7 @@ async function getRemoteSticker(url) {
     const fetch = (await import('node-fetch')).default;
     var stickers = [];
     try {
-        const fetchData = await fetch(url, {});
+        const fetchData = await fetch(url, { method: 'head' });
 
         if (!fetchData.ok)
             throw new Error(
