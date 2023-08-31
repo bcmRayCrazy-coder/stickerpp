@@ -1,6 +1,6 @@
 {
     "name": "stickerpp",
-    "version": "0.1.0",
+    "version": "0.1.8",
     "description": "更多、更好的表情管理😊",
     "repository": {
         "type": "git",
@@ -19,6 +19,7 @@
         "node-fetch": "^3.3.2"
     },
     "devDependencies": {
+        "electron": "^26.1.0",
         "prettier": "^3.0.3"
     }
 }

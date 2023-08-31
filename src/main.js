@@ -30,7 +30,7 @@ function getAllFiles(filePath) {
             let stats = fs.lstatSync(currentFilePath);
             if (stats.isDirectory()) {
                 allFilePaths = allFilePaths.concat(
-                    getAllFiles(currentFilePath),
+                    getAllFiles(currentFilePath)
                 );
             } else {
                 allFilePaths.push(currentFilePath);
@@ -104,11 +104,6 @@ async function onLoad(plugin) {
         }
     });
 
-    // 显示表情目录
-    ipcMain.handle('LiteLoader.stickerpp.showStickerDir', (event) => {
-        shell.openPath(config.sticker_path);
-    });
-
     // 获取本地表情
     ipcMain.handle('LiteLoader.stickerpp.getLocalStickers', (event) => {
         var paths = getAllFiles(config.sticker_path).filter(isValidStickerFile);
@@ -131,7 +126,7 @@ async function onLoad(plugin) {
             // 16位随机字符串
             const localPath = path.join(
                 tmpPath,
-                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16),
+                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16)
             );
             await downloadRemoteStickers(stickerPath, localPath);
             setTimeout(() => {
@@ -139,7 +134,20 @@ async function onLoad(plugin) {
                 fs.unlinkSync(localPath);
             }, 60000);
             return localPath;
-        },
+        }
+    );
+
+    // 操作
+    ipcMain.handle(
+        'LiteLoader.stickerpp.action.openPath',
+        async (event, path) => await shell.openPath(path)
+    );
+    ipcMain.handle(
+        'LiteLoader.stickerpp.action.openExternal',
+        async (event, url) => await shell.openExternal(url)
+    );
+    ipcMain.handle('LiteLoader.stickerpp.action.showItem', (event, path) =>
+        shell.showItemInFolder(path)
     );
 }
 

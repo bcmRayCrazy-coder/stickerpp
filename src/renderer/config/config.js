@@ -42,7 +42,10 @@ async function listenConfigContent(view) {
         stickerpp.setConfig(JSON.stringify(newConfig));
     }, 500);
     // 显示表情目录
-    const showStickerDir = debounce(() => stickerpp.showStickerDir(), 200);
+    const showStickerDir = debounce(
+        () => stickerpp.openPath(config.sticker_path),
+        200
+    );
 
     /**
      * 监听元素
@@ -93,11 +96,11 @@ async function listenConfigContent(view) {
     listenChange(
         'sticker_path',
         (e) => e.value,
-        (e, defaultValue) => (e.value = defaultValue),
+        (e, defaultValue) => (e.value = defaultValue)
     );
 
     view.querySelector('#show_sticker_dir').addEventListener('click', () =>
-        showStickerDir(),
+        showStickerDir()
     );
 
     log('Listening to config view');

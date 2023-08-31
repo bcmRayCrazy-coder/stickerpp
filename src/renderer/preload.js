@@ -7,8 +7,6 @@ contextBridge.exposeInMainWorld('stickerpp', {
     getConfig: () => ipcRenderer.invoke('LiteLoader.stickerpp.getConfig'),
     setConfig: (content) =>
         ipcRenderer.invoke('LiteLoader.stickerpp.setConfig', content),
-    showStickerDir: () =>
-        ipcRenderer.invoke('LiteLoader.stickerpp.showStickerDir'),
 
     // 表情
     getLocalStickers: () =>
@@ -17,4 +15,9 @@ contextBridge.exposeInMainWorld('stickerpp', {
         ipcRenderer.invoke('LiteLoader.stickerpp.getRemoteStickers'),
     downloadRemoteSticker: (url) =>
         ipcRenderer.invoke('LiteLoader.stickerpp.downloadRemoteSticker', url),
+
+    // 操作
+    openPath:  (path) => ipcRenderer.invoke('LiteLoader.stickerpp.action.openPath', path),
+    openExternal: (url) => ipcRenderer.invoke('LiteLoader.stickerpp.action.openExternal',url),
+    showItem: (path) => ipcRenderer.invoke('LiteLoader.stickerpp.action.showItem',path)
 });
