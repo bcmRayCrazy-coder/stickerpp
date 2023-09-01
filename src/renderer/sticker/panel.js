@@ -12,7 +12,7 @@ async function sendSticker(stickerPath) {
             asface: true,
         },
     ];
-    console.log(await LLAPI.sendMessage(peer, elements));
+    await LLAPI.sendMessage(peer, elements);
 }
 
 /**
@@ -24,13 +24,14 @@ export async function addLocalStickerPanel(panel) {
      * @type {string[]}
      */
     const stickers = await stickerpp.getLocalStickers();
+    const { sticker_path } = await stickerpp.getConfig();
 
     var pageContent = '';
     stickers.forEach((stickerPath) => {
         pageContent += `
 <div class="stickerpp-list-item"><div class="q-tooltips sticker-list-tooltips"><div class="stickerpp-image sticker-list-item-img" tabindex="-1" data-src="${stickerPath}" style="width: 58px; height: 58px;" id="local-sticker-item"><img class="image-content image-content--contain" src="llqqnt://local-file/${stickerPath}" loading="eager"></div><div class="q-tooltips__content q-tooltips__right  q-tooltips__no_content" style=""></div></div></div>`;
     });
-
+    
     /**
      * @type {HTMLElement} page元素
      */
@@ -54,19 +55,20 @@ export async function addLocalStickerPanel(panel) {
  * @param {Element} panel 表情面板
  */
 export async function addRemoteStickerPanel(panel) {
-    console.log('\n\nGet stickers\n\n');
     /**
      * @type {string[]}
      */
     const stickers = await stickerpp.getRemoteStickers();
     console.log('\n\n', stickers, '\n\n');
 
+    const { sticker_path } = await stickerpp.getConfig();
+
     var pageContent = '';
     stickers.forEach((stickerPath) => {
         pageContent += `
-<div class="stickerpp-list-item"><div class="q-tooltips sticker-list-tooltips"><div class="stickerpp-image sticker-list-item-img" tabindex="-1" data-src="${stickerPath}" style="width: 58px; height: 58px;" id="remote-sticker-item"><img class="image-content image-content--contain" src="${stickerPath}" loading="eager"></div><div class="q-tooltips__content q-tooltips__right  q-tooltips__no_content" style=""></div></div></div>`;
+<div class="stickerpp-list-item"><div class="q-tooltips sticker-list-tooltips"><div class="stickerpp-image sticker-list-item-img" tabindex="-1" data-src="${stickerPath}" style="width: 58px; height: 58px;" id="remote-sticker-item"><img class="image-content image-content--contain" src="${stickerPath}" loading="eager" /></div><div class="q-tooltips__content q-tooltips__right  q-tooltips__no_content" style=""></div></div></div>`;
     });
-
+    
     /**
      * @type {HTMLElement} page元素
      */
@@ -80,7 +82,8 @@ export async function addRemoteStickerPanel(panel) {
     page.querySelectorAll('#remote-sticker-item').forEach((btn) => {
         const stickerPath = btn.dataset.src;
         btn.addEventListener('click', async () => {
-            const localPath = await stickerpp.downloadRemoteSticker(stickerPath);
+            const localPath =
+                await stickerpp.downloadRemoteSticker(stickerPath);
             console.log(localPath);
             sendSticker(localPath);
         });

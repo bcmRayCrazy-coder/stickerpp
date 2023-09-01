@@ -1,7 +1,6 @@
 const plugin_path = LiteLoader.plugins.stickerpp.path;
-const { log } = await import(
-    `llqqnt://local-file/${plugin_path.plugin}/src/logger.js`
-);
+await import(`llqqnt://local-file/${plugin_path.plugin}/src/logger.js`);
+const { log } = globalThis.logger;
 
 // 防抖
 function debounce(fn, time) {
@@ -28,6 +27,11 @@ async function addConfigContent(view) {
     link.href = cssPath;
     document.head.appendChild(link);
 
+    const idDarkMode = document.body.getAttribute('q-theme') != 'light';
+    view.querySelectorAll('#svg-fill').forEach((e) => {
+        e.setAttribute('fill', idDarkMode ? '#ffffff' : '#000000');
+    });
+
     log('Added config view');
 }
 
@@ -42,7 +46,20 @@ async function listenConfigContent(view) {
         stickerpp.setConfig(JSON.stringify(newConfig));
     }, 500);
     // 显示表情目录
-    const showStickerDir = debounce(() => stickerpp.showStickerDir(), 200);
+    const showStickerDir = debounce(
+        () => stickerpp.openPath(config.sticker_path),
+        500
+    );
+    // 访问GitHub
+    const visitGitHub = debounce(
+        () =>
+            stickerpp.openExternal(
+                'https://github.com/bcmRayCrazy-coder/stickerpp'
+            ),
+        500
+    );
+    // 清除缓存
+    const clearCache = debounce(() => stickerpp.clearCache(), 500);
 
     /**
      * 监听元素
@@ -87,6 +104,15 @@ async function listenConfigContent(view) {
         });
     }
 
+    /**
+     * 监听按钮点击
+     * @param {string} id 按钮id
+     * @param {()=>void} fn 触发函数
+     */
+    function listenButton(id, fn) {
+        view.querySelector('#' + id).addEventListener('click', () => fn());
+    }
+
     listenSwitch('sticker_together');
     listenSwitch('enable_remote');
 
@@ -96,9 +122,9 @@ async function listenConfigContent(view) {
         (e, defaultValue) => (e.value = defaultValue)
     );
 
-    view.querySelector('#show_sticker_dir').addEventListener('click', () =>
-        showStickerDir()
-    );
+    listenButton('clear_cache', clearCache);
+    listenButton('show_sticker_dir', showStickerDir);
+    listenButton('visit_github', visitGitHub);
 
     log('Listening to config view');
 }

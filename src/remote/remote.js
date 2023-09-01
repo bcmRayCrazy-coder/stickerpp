@@ -7,11 +7,11 @@ async function getRemoteSticker(url) {
     const fetch = (await import('node-fetch')).default;
     var stickers = [];
     try {
-        const fetchData = await fetch(url, {});
+        const fetchData = await fetch(url, { method: 'head' });
 
-        if (!fetchData.ok)
+        if (fetchData.status >= 400)
             throw new Error(
-                '无法获取 ' + url + ' 的表情 - 状态码不在 200~299 之间'
+                '无法获取 ' + url + ' 的表情 - 状态码不在 400 之前',
             );
 
         const type = fetchData.headers.get('Content-Type').split('/')[0];
