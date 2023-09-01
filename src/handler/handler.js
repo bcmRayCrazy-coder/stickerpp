@@ -26,7 +26,7 @@ function getAllFiles(filePath) {
             let stats = fs.lstatSync(currentFilePath);
             if (stats.isDirectory()) {
                 allFilePaths = allFilePaths.concat(
-                    getAllFiles(currentFilePath),
+                    getAllFiles(currentFilePath)
                 );
             } else {
                 allFilePaths.push(currentFilePath);
@@ -102,7 +102,7 @@ module.exports = function registerHandlers(plugin) {
             // 16位随机字符串
             const localPath = path.join(
                 tmpPath,
-                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16),
+                crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0, 16)
             );
             await downloadRemoteStickers(stickerPath, localPath);
             setTimeout(() => {
@@ -110,19 +110,26 @@ module.exports = function registerHandlers(plugin) {
                 fs.unlinkSync(localPath);
             }, 60000);
             return localPath;
-        },
+        }
     );
+
+    // 清除缓存
+    ipcMain.handle('LiteLoader.stickerpp.clearCache', async (event) => {
+        getAllFiles(tmpPath).forEach(async (filePath) =>
+            fs.unlinkSync(filePath)
+        );
+    });
 
     // 操作
     ipcMain.handle(
         'LiteLoader.stickerpp.action.openPath',
-        async (event, path) => await shell.openPath(path),
+        async (event, path) => await shell.openPath(path)
     );
     ipcMain.handle(
         'LiteLoader.stickerpp.action.openExternal',
-        async (event, url) => await shell.openExternal(url),
+        async (event, url) => await shell.openExternal(url)
     );
     ipcMain.handle('LiteLoader.stickerpp.action.showItem', (event, path) =>
-        shell.showItemInFolder(path),
+        shell.showItemInFolder(path)
     );
 };

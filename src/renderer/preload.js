@@ -15,6 +15,8 @@ contextBridge.exposeInMainWorld('stickerpp', {
         ipcRenderer.invoke('LiteLoader.stickerpp.getRemoteStickers'),
     downloadRemoteSticker: (url) =>
         ipcRenderer.invoke('LiteLoader.stickerpp.downloadRemoteSticker', url),
+    clearCache: () =>
+        ipcRenderer.invoke('LiteLoader.stickerpp.clearCache'),
 
     // 操作
     openPath: (path) =>

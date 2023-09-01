@@ -48,14 +48,18 @@ async function listenConfigContent(view) {
     // 显示表情目录
     const showStickerDir = debounce(
         () => stickerpp.openPath(config.sticker_path),
-        200,
+        500
     );
     // 访问GitHub
-    const visitGitHub = debounce(() =>
-        stickerpp.openExternal(
-            'https://github.com/bcmRayCrazy-coder/stickerpp',
-        ),
+    const visitGitHub = debounce(
+        () =>
+            stickerpp.openExternal(
+                'https://github.com/bcmRayCrazy-coder/stickerpp'
+            ),
+        500
     );
+    // 清除缓存
+    const clearCache = debounce(() => stickerpp.clearCache(), 500);
 
     /**
      * 监听元素
@@ -115,11 +119,12 @@ async function listenConfigContent(view) {
     listenChange(
         'sticker_path',
         (e) => e.value,
-        (e, defaultValue) => (e.value = defaultValue),
+        (e, defaultValue) => (e.value = defaultValue)
     );
 
-    listenButton('show_sticker_dir', () => showStickerDir());
-    listenButton('visit_github', () => visitGitHub());
+    listenButton('clear_cache', clearCache);
+    listenButton('show_sticker_dir', showStickerDir);
+    listenButton('visit_github', visitGitHub);
 
     log('Listening to config view');
 }
