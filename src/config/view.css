@@ -6,3 +6,8 @@
 .stckerpp .text-input {
     padding: 5px 5px;
 }
+
+.stickerpp .icon-title {
+    display: inline-flex;
+    align-items: center;
+}
