@@ -35,6 +35,26 @@ async function addConfigContent(view) {
     log('Added config view');
 }
 
+/**
+ * 添加配置图标
+ */
+function addConfigIcon() {
+    const pluginPath = LiteLoader.plugins.stickerpp.path.plugin;
+
+    document.querySelectorAll('.nav-item.liteloader').forEach((node) => {
+        if (node.textContent === 'Sticker++') {
+            const icon_node = node.querySelector('.q-icon.icon');
+            if (icon_node.firstElementChild) {
+                return;
+            }
+            icon_node.insertAdjacentHTML(
+                'afterbegin',
+                `<img src="llqqnt://local-file/${pluginPath}/icon.png" alt="" height="20"/>`
+            );
+        }
+    });
+}
+
 /** 监听配置页面
  * @param {Element} view 页面
  */
@@ -137,4 +157,5 @@ export async function config(view) {
     log('设置Config页面');
     await addConfigContent(view);
     await listenConfigContent(view);
+    addConfigIcon();
 }
