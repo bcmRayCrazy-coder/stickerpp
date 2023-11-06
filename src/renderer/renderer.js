@@ -11,7 +11,7 @@ const { initStickerMenu } = await import(
 function onLoad() {
     var getpanelInterval = setInterval(() => {
         var panel = document.querySelector(
-            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.expression-panel > div > div',
+            '#app > div.container   div.group-panel > div.group-chat > div.chat-input-area > div.expression,div.expression-panel > div > div.sticker-panel',
         );
         if (!panel) return;
 
