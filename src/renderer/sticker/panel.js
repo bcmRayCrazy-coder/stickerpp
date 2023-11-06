@@ -4,15 +4,14 @@ const { addMenu } = await import(
 );
 
 async function sendSticker(stickerPath) {
-    const peer = await LLAPI.getPeer();
-    const elements = [
-        {
-            type: 'image',
-            file: stickerPath,
-            asface: true,
-        },
-    ];
-    await LLAPI.sendMessage(peer, elements);
+    const message = {
+        type: "pic",
+        src: stickerPath
+    };
+    document.querySelector(
+        '#app > div.container   div.group-panel > div.group-chat > div.chat-input-area > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div',
+    ).click();
+    LLAPI.add_editor(message);
 }
 
 /**

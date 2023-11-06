@@ -15,6 +15,15 @@
     color: var(--brand_standard);
 }
 
+.stickerpp-container-item-active, .stickerpp-container-item-active:active, .stickerpp-container-item-active:hover {
+    background-color: var(--global-brand_standard);
+}
+
+.stickerpp-container-item-active {
+    --global-brand_standard: var(--brand_standard);
+    color: var(--brand_standard);
+}
+
 .stickerpp-container {
     height: 100%;
     position: relative;
@@ -50,6 +59,14 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+    width: 58px;
+    height: 58px;
+}
+
+.stickerpp-image:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transform-origin: center center;
 }
 
 .stickerpp-image .image-content {
