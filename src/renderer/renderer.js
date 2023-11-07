@@ -10,9 +10,7 @@ const { initStickerMenu } = await import(
 // 页面加载完成时触发
 function onLoad() {
     var getpanelInterval = setInterval(() => {
-        var panel = document.querySelector(
-            '#app > div.container   div.group-panel > div.group-chat > div.chat-input-area > div.expression,div.expression-panel > div > div.sticker-panel',
-        );
+        var panel = document.querySelector('div.sticker-panel');
         if (!panel) return;
 
         initStickerMenu(panel);

@@ -91,9 +91,7 @@ export function addMenu(panel, title, icon, page, id) {
 
     // 修复打开插件添加的tab后关闭表情, 再打开无法使用的问题
     setInterval(() => {
-        var shortcutsElement = document.querySelector(
-            '#app > div.container   div.group-panel > div.group-chat > div.chat-input-area > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div',
-        );
+        var shortcutsElement = document.querySelector('div.icon-item[aria-label="表情"]');
         if (!shortcutsElement) return;
         shortcutsElement.addEventListener('click', () => {
             if (nowTabId === id) {

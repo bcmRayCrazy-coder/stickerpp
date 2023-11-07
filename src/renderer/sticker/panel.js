@@ -8,9 +8,7 @@ async function sendSticker(stickerPath) {
         type: "pic",
         src: stickerPath
     };
-    document.querySelector(
-        '#app > div.container   div.group-panel > div.group-chat > div.chat-input-area > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div',
-    ).click();
+    document.querySelector('div.icon-item[aria-label="表情"]').click();
     LLAPI.add_editor(message);
 }
 
