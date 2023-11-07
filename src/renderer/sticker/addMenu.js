@@ -17,7 +17,7 @@ function setPageShow(id, show, pageWrapper) {
  * @param {string} icon 图标
  * @param {Element} page 页面
  * @param {string} id tab id
- * @returns {HTMLElement} page 元素
+ * @returns {HTMLElement} page元素
  */
 var nowTabId = -1;    // 记录当前 tab id，-1 表示 QQ 原有 tab
 export function addMenu(panel, title, icon, page, id) {
@@ -75,8 +75,12 @@ export function addMenu(panel, title, icon, page, id) {
                 // 切换到其他 tab
                 e.classList.add('tabs-container-item-active');
                 const icon = e.querySelector('i');
-                icon.style.cssText = icon.style.cssText.replace('var(--icon_primary)', 'var(--on_brand_secondary)');
-                pageWrapperElement.children[eid].style.display = '';
+                if (icon) {
+                    icon.style.cssText = icon.style.cssText.replace('var(--icon_primary)', 'var(--on_brand_secondary)');
+                    if (pageWrapperElement.childNodes[eid].tagName == 'DIV') {
+                        pageWrapperElement.childNodes[eid].style.display = '';
+                    }
+                }
                 // 更新 tab id
                 nowTabId = -1;
             }
@@ -92,7 +96,7 @@ export function addMenu(panel, title, icon, page, id) {
         );
         if (!shortcutsElement) return;
         shortcutsElement.addEventListener('click', () => {
-            if (nowTabId == id) {
+            if (nowTabId === id) {
                 pageWrapperElement.style.visibility = 'hidden';
                 setTimeout(() => {
                     panel
