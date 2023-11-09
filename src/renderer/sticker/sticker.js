@@ -15,6 +15,6 @@ export async function initStickerMenu(panel) {
 
     const config = await stickerpp.getConfig();
 
-    addLocalStickerPanel(panel);
-    if (config.enable_remote) addRemoteStickerPanel(panel);
+    addLocalStickerPanel(panel, config.send_to_input);
+    if (config.enable_remote) addRemoteStickerPanel(panel, config.send_to_input);
 }

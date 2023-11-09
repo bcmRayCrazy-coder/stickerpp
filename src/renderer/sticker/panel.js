@@ -4,6 +4,18 @@ const { addMenu } = await import(
 );
 
 async function sendSticker(stickerPath) {
+    const peer = await LLAPI.getPeer();
+    const elements = [
+        {
+            type: 'image',
+            file: stickerPath,
+            asface: true,
+        },
+    ];
+    await LLAPI.sendMessage(peer, elements);
+}
+
+async function sendStickerToInput(stickerPath) {        // 仅限于 Windows 平台
     const message = {
         type: "pic",
         src: stickerPath
@@ -41,7 +53,9 @@ export async function addLocalStickerPanel(panel) {
     );
     page.querySelectorAll('#local-sticker-item').forEach((btn) => {
         const stickerPath = btn.dataset.src;
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', toinput ? () => {
+            sendStickerToInput(stickerPath);
+        } : () => {
             sendSticker(stickerPath);
         });
     });
@@ -51,7 +65,7 @@ export async function addLocalStickerPanel(panel) {
  * 添加远程表情面板
  * @param {Element} panel 表情面板
  */
-export async function addRemoteStickerPanel(panel) {
+export async function addRemoteStickerPanel(panel, toinput) {
     /**
      * @type {string[]}
      */
@@ -78,11 +92,10 @@ export async function addRemoteStickerPanel(panel) {
     );
     page.querySelectorAll('#remote-sticker-item').forEach((btn) => {
         const stickerPath = btn.dataset.src;
-        btn.addEventListener('click', async () => {
-            const localPath =
-                await stickerpp.downloadRemoteSticker(stickerPath);
-            console.log(localPath);
-            sendSticker(localPath);
+        btn.addEventListener('click', toinput ? () => {
+            sendStickerToInput(stickerPath);
+        } : () => {
+            sendSticker(stickerPath);
         });
     });
 }

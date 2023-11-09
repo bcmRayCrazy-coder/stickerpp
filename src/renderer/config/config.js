@@ -32,6 +32,11 @@ async function addConfigContent(view) {
         e.setAttribute('fill', idDarkMode ? '#ffffff' : '#000000');
     });
 
+    if (navigator.userAgentData.platform == 'Windows') {
+        view.querySelector('#send_to_input_divline').style.display = '';
+        view.querySelector('#send_to_input_item').style.display = '';
+    }
+
     log('Added config view');
 }
 
@@ -115,6 +120,7 @@ async function listenConfigContent(view) {
 
     listenSwitch('sticker_together');
     listenSwitch('enable_remote');
+    listenSwitch('send_to_input');
 
     listenChange(
         'sticker_path',
