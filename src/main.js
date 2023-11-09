@@ -6,6 +6,7 @@ const path = require('path');
 var defaultConfig = {
     sticker_together: false,
     enable_remote: false,
+    send_to_input: false,
     sticker_path: '',
 };
 

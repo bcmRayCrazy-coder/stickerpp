@@ -6,7 +6,7 @@
  */
 function setPageShow(id, show, pageWrapper) {
     pageWrapper.querySelector('#page-' + id).style.display = show
-        ? 'block'
+        ? ''
         : 'none';
 }
 
@@ -19,13 +19,11 @@ function setPageShow(id, show, pageWrapper) {
  * @param {string} id tab id
  * @returns {HTMLElement} page元素
  */
+var nowTabId = -1;    // 记录当前 tab id，-1 表示 QQ 原有 tab
 export function addMenu(panel, title, icon, page, id) {
     const iconElement = document.createElement('div');
     iconElement.innerHTML = `<i class="q-icon" title="${title}" is-bold="true"style="color:var(--icon_primary); height:24px;">${icon}</i>`;
-    iconElement.classList.add(
-        'tabs-container-item',
-        'stickerpp-container-item',
-    );
+    iconElement.classList.add('stickerpp-container-item');
     iconElement.id = id;
 
     // Page
@@ -42,23 +40,49 @@ export function addMenu(panel, title, icon, page, id) {
     const tabElement = panel.querySelector('div.tabs.sticker-panel__bar > div');
     tabElement.appendChild(iconElement);
 
+    // 切换到本 tab
     iconElement.addEventListener('click', () => {
-        // 切换到本tab
+        // 切换出其他 tab
         panel
             .querySelectorAll('.tabs-container-item-active')
-            .forEach((e) => e.classList.remove('tabs-container-item-active'));
+            .forEach((e) => {
+                e.classList.remove('tabs-container-item-active');
+                const icon = e.querySelector('i');
+                icon.style.cssText = icon.style.cssText.replace('var(--on_brand_secondary)', 'var(--icon_primary)');
+            });
+        panel
+            .querySelectorAll('.stickerpp-container-item-active')
+            .forEach((e) => {
+                e.classList.remove('stickerpp-container-item-active');
+            });
         panel
             .querySelectorAll('div.sticker-panel__pages > div')
             .forEach((e) => (e.style.display = 'none'));
+        // 切换到本 tab
+        iconElement.classList.add('stickerpp-container-item-active');
         setPageShow(id, true, pageWrapperElement);
+        // 更新 tab id
+        nowTabId = id;
     });
 
-    document.querySelectorAll('.tabs-container-item').forEach((e) =>
+    // 切换到其他 tab（QQ 原有 tab）
+    document.querySelectorAll('.tabs-container-item').forEach((e, eid) =>
         e.addEventListener('click', () => {
-            if (e.id != id) {
-                // 切换到其他tab
-                iconElement.classList.remove('tabs-container-item-active');
+            if (iconElement.classList.contains('stickerpp-container-item-active')) {
+                // 切换出本 tab
+                iconElement.classList.remove('stickerpp-container-item-active');
                 setPageShow(id, false, pageWrapperElement);
+                // 切换到其他 tab
+                e.classList.add('tabs-container-item-active');
+                const icon = e.querySelector('i');
+                if (icon) {
+                    icon.style.cssText = icon.style.cssText.replace('var(--icon_primary)', 'var(--on_brand_secondary)');
+                    if (pageWrapperElement.childNodes[eid].tagName == 'DIV') {
+                        pageWrapperElement.childNodes[eid].style.display = '';
+                    }
+                }
+                // 更新 tab id
+                nowTabId = -1;
             }
         }),
     );
@@ -67,12 +91,21 @@ export function addMenu(panel, title, icon, page, id) {
 
     // 修复打开插件添加的tab后关闭表情, 再打开无法使用的问题
     setInterval(() => {
-        var shortcutsElement = document.querySelector(
-            '#app > div.container > div.tab-container > div > div.aio > div.group-panel.need-token-updated > div.group-chat > div.chat-input-area.no-copy > div.chat-func-bar.shortcuts > div:nth-child(1) > div:nth-child(1) > div',
-        );
+        var shortcutsElement = document.querySelector('div.icon-item[aria-label="表情"]');
         if (!shortcutsElement) return;
         shortcutsElement.addEventListener('click', () => {
-            setPageShow(id, false, pageWrapperElement);
+            if (nowTabId === id) {
+                pageWrapperElement.style.visibility = 'hidden';
+                setTimeout(() => {
+                    panel
+                        .querySelectorAll('div.sticker-panel__pages > div')
+                        .forEach((e) => (e.style.display = 'none'));
+                    setPageShow(id, true, pageWrapperElement);
+                    pageWrapperElement.style.visibility = '';
+                }, 50);
+            } else {
+                setPageShow(id, false, pageWrapperElement);
+            }
         });
     }, 500);
 

@@ -7,7 +7,7 @@ const { log } = require('../logger.js');
 const getAllRemoteStickers = require('../remote/remote.js');
 const downloadRemoteStickers = require('../remote/download.js');
 
-const stickerFileRegExp = new RegExp(/.+\.(png|jpe?g|gif)/g);
+const stickerFileRegExp = new RegExp(/.*\.(png|jpe?g|gif)$/);
 function isValidStickerFile(value) {
     return stickerFileRegExp.test(value);
 }
