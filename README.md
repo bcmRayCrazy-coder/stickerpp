@@ -1,3 +1,5 @@
+> <h1>由于LLQQNT更新，该插件已过期</h1>
+
 # Sticker++
 
 LiteLoaderQQNT插件 - 更多、更好的表情管理😊
